@@ -18,11 +18,11 @@ public class Game implements Runnable {
 
     public Game()
     {
-        this.initClasses();
-        this.gamePanel = new GamePanel(this);
-        this.gameWindow = new GameWindow(this.gamePanel);
-        this.gamePanel.requestFocus();
-        this.startGameLoop();
+        initClasses();
+        gamePanel = new GamePanel(this);
+        gameWindow = new GameWindow(this.gamePanel);
+        gamePanel.requestFocus();
+        startGameLoop();
     }
 
     private void initClasses()
@@ -31,8 +31,8 @@ public class Game implements Runnable {
 
     private void startGameLoop()
     {
-        this.gameThread = new Thread(this);
-        this.gameThread.start();
+        gameThread = new Thread(this);
+        gameThread.start();
     }
 
     public void update()

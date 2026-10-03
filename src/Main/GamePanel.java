@@ -5,7 +5,12 @@
 
 package Main;
 
+import Inputs.KeyboardInputs;
+import Inputs.MouseInputs;
+
 import java.awt.Graphics;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import javax.swing.JPanel;
 
 public class GamePanel extends JPanel {
@@ -14,15 +19,17 @@ public class GamePanel extends JPanel {
     public GamePanel(Game game)
     {
         this.game = game;
+        addKeyListener(new KeyboardInputs());
+        addMouseListener(new MouseInputs());
     }
 
     public void paintComponent(Graphics g)
     {
         super.paintComponent(g);
-        g.drawRect(100, 100, 200, 50);
+        g.fillRect(100, 100, 200, 50);
     }
 
     public Game getGame() {
-        return this.game;
+        return game;
     }
 }
