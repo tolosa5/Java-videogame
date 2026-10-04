@@ -27,6 +27,7 @@ public class Game implements Runnable {
 
     private void initClasses()
     {
+
     }
 
     private void startGameLoop()
@@ -37,17 +38,44 @@ public class Game implements Runnable {
 
     public void update()
     {
+
     }
 
     public void render(Graphics g)
     {
+
     }
 
     public void windowFocusLost()
     {
+
     }
 
     public void run()
     {
+        double timePerFrame = 1000000000.0 / FPS_SET;
+        long lastFrame = System.nanoTime();
+        long now = System.nanoTime();
+
+        int frames = 0;
+        long lastCheck = System.currentTimeMillis();
+
+        while (true)
+        {
+            now = System.nanoTime();
+            if (now - lastFrame >= timePerFrame)
+            {
+                gamePanel.repaint();
+                lastFrame = now;
+                frames++;
+            }
+
+            if(System.currentTimeMillis() - lastCheck >= 1000)
+            {
+                lastCheck = System.currentTimeMillis();
+                System.out.println("FPS: " + FPS_SET);
+                frames = 0;
+            }
+        }
     }
 }
