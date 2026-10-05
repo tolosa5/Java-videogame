@@ -15,53 +15,21 @@ import java.io.InputStream;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
+import static utils.Constants.PlayerConstants.*;
+
 public class GamePanel extends JPanel {
     private Game game;
     private MouseInputs mouseInputs;
-    private BufferedImage image;
-    private BufferedImage subImage;
-    private BufferedImage[] walkLeftAnimation;
-    private int xDelta = 100, yDelta = 100;
 
     public GamePanel(Game game)
     {
         this.game = game;
         mouseInputs = new MouseInputs(this);
 
-        importImg();
-        loadAnimations();
-
         setPanelSize();
         addKeyListener(new KeyboardInputs(this));
         addMouseListener(mouseInputs);
         addMouseMotionListener(mouseInputs);
-    }
-
-    private void loadAnimations()
-    {
-        walkLeftAnimation = new BufferedImage[4];
-        for (int i = 0; i < 4; i++)
-        {
-            walkLeftAnimation[i] = image.getSubimage(i * 64, 64, 64, 64);
-        }
-
-    }
-
-    private void importImg()
-    {
-        InputStream is = getClass().getResourceAsStream("/images/playerSprite.png");
-
-        try{
-            image = ImageIO.read(is);
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                is.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
     }
 
     private void setPanelSize()
@@ -72,33 +40,15 @@ public class GamePanel extends JPanel {
         setMaximumSize(size);
     }
 
-    public void changeXDelta(int xDelta)
-    {
-        this.xDelta += xDelta;
-    }
-
-    public void changeYDelta(int yDelta)
-    {
-        this.yDelta += yDelta;
-    }
-
-    public void setRectPos(int x, int y)
-    {
-        this.xDelta = x;
-        this.yDelta = y;
-    }
-
     public void paintComponent(Graphics g)
     {
         super.paintComponent(g);
-
-        subImage = image.getSubimage(0, 0, 64, 64);
-        g.drawImage(subImage, (int)xDelta, (int)yDelta, 128, 128, null);
+        game.render(g);
     }
 
-    private void updateAnimation()
+    public void updateGame()
     {
-        // Update the animation here
+        // Update game logic here
     }
 
     public Game getGame() { return game; }

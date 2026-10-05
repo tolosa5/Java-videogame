@@ -23,6 +23,7 @@ public class GameWindow extends JFrame {
         jFrame.addWindowFocusListener(new WindowFocusListener() {
             public void windowGainedFocus(WindowEvent e)
             {
+
             }
 
             public void windowLostFocus(WindowEvent e) {
