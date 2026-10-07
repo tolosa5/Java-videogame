@@ -27,4 +27,9 @@ public class LoadSave
         }
         return image;
     }
+
+    public static int[][] GetLevelData(String path, int width, int height)
+    {
+        return null;
+    }
 }

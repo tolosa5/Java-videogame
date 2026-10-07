@@ -28,9 +28,12 @@ public class Game implements Runnable {
     private void initClasses()
     {
         gamePanel = new GamePanel(this);
-        gameWindow = new GameWindow(this.gamePanel);
-        player = new Player(100, 100, 100, 5);
+
+        player = new Player(100, 100, 32, 32, 100, 5);
         levelManager = new LevelManager(this);
+
+        //------------------------------------------
+        gameWindow = new GameWindow(this.gamePanel);
     }
 
     private void startGameLoop()

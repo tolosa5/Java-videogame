@@ -1,5 +1,6 @@
 package entities;
 
+import components.AnimatorComponent;
 import utils.LoadSave;
 
 import java.awt.*;
@@ -9,88 +10,44 @@ import static utils.Constants.PlayerConstants.*;
 
 public class Player extends Entity
 {
+    public AnimatorComponent animator;
     private int health;
     private int speed;
 
     private boolean isMoving;
-    private boolean isAttacking;
-    private BufferedImage[][] animations;
-    private int animTick, animIndex, aniSpeed = 15;
-    private int playerDirection = -1;
     private int playerAction = LEFT_WALK;
     private boolean left, up, right, down;
 
-    public Player(float x, float y, int health, int speed)
+    public Player(float x, float y, int width, int height, int health, int speed)
     {
-        super(x, y);
+        super(x, y, width, height);
         this.health = health;
         this.speed = speed;
 
-        loadAnimations();
+        initComponents();
+        animator.loadAnimations();
+    }
+
+    @Override
+    protected void initComponents()
+    {
+        super.initComponents();
+        this.animator = new AnimatorComponent();
     }
 
     public void update()
     {
         move();
-        updateAnimation();
-        setAnimation();
+        collider.updateHitbox(x, y);
+        animator.updateAnimation();
+        animator.setAnimation();
     }
 
     public void render(Graphics g)
     {
-        g.drawImage(animations[playerAction][animIndex], (int)x, (int)y, 128, 128, null);
-    }
-
-    private void loadAnimations()
-    {
-        BufferedImage image = LoadSave.GetSpriteAtlas(LoadSave.PLAYER_ATLAS);
-
-        animations = new BufferedImage[4][4];
-        for (int i = 0; i < animations.length; i++)
-        {
-            for (int j = 0; j < animations[i].length; j++)
-            {
-                animations[i][j] = image.getSubimage(j * 64, i * 64, 64, 64);
-            }
-        }
-    }
-
-    private void setAnimation()
-    {
-        int startAnim = playerDirection;
-
-        playerAction = LEFT_WALK;
-        if (isAttacking)
-        {
-            //playerAction = ATTACK;
-        }
-
-        if (startAnim == playerAction)
-        {
-            resetAnim();
-        }
-    }
-
-    private void resetAnim()
-    {
-        animTick = 0;
-        animIndex = 0;
-    }
-
-    private void updateAnimation()
-    {
-        animTick++;
-        if (animTick >= aniSpeed)
-        {
-            animTick = 0;
-            animIndex++;
-            if (animIndex >= GetSpriteAmount(playerAction))
-            {
-                isAttacking = false;
-                animIndex = 0;
-
-            }
-        }
+        animator.renderAnimation(x, y, width, height, g);
+        //debug
+        collider.drawHitbox(g);
     }
 
     public void move()
@@ -118,11 +75,6 @@ public class Player extends Entity
             y += speed;
             isMoving = true;
         }
-    }
-
-    private void setAttack()
-    {
-        isAttacking = true;
     }
 
     public void resetDirBooleans()
