@@ -1,23 +1,20 @@
 package Main;
 
 import entities.Player;
+import levels.LevelManager;
 
 import java.awt.Graphics;
+import static utils.Constants.GameConstants.*;
 
 public class Game implements Runnable {
     private GameWindow gameWindow;
     private GamePanel gamePanel;
     private Player player;
+    private LevelManager levelManager;
     private Thread gameThread;
+
     private final int FPS_SET = 120;
     private final int UPS_SET = 120;
-    public static final int TILES_DEFAULT_SIZE = 32;
-    public static final float SCALE = 1.5F;
-    public static final int TILES_IN_WIDTH = 40;
-    public static final int TILES_IN_HEIGHT = 25;
-    public static final int TILES_SIZE = 32;
-    public static final int GAME_WIDTH = TILES_SIZE * TILES_IN_WIDTH;
-    public static final int GAME_HEIGHT = TILES_SIZE * TILES_IN_HEIGHT;
 
     public Game()
     {
@@ -30,9 +27,10 @@ public class Game implements Runnable {
 
     private void initClasses()
     {
-        player = new Player(100, 100, 100, 10);
         gamePanel = new GamePanel(this);
         gameWindow = new GameWindow(this.gamePanel);
+        player = new Player(100, 100, 100, 5);
+        levelManager = new LevelManager(this);
     }
 
     private void startGameLoop()
@@ -45,17 +43,19 @@ public class Game implements Runnable {
     {
         gamePanel.updateGame();
         player.update();
+        levelManager.update();
     }
 
     public void render(Graphics g)
     {
         gamePanel.repaint();
         player.render(g);
+        levelManager.draw(g);
     }
 
     public void windowFocusLost()
     {
-
+        player.resetDirBooleans();
     }
 
     public void run()
@@ -92,7 +92,7 @@ public class Game implements Runnable {
                 deltaF--;
             }
 
-            if(System.currentTimeMillis() - lastCheck >= 1000)
+            if (System.currentTimeMillis() - lastCheck >= 1000)
             {
                 lastCheck = System.currentTimeMillis();
                 System.out.println("FPS: " + frames + " | UPS: " + updates);
@@ -102,8 +102,5 @@ public class Game implements Runnable {
         }
     }
 
-    public Player getPlayer()
-    {
-        return player;
-    }
+    public Player getPlayer() { return player; }
 }

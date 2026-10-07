@@ -9,13 +9,10 @@ import Inputs.KeyboardInputs;
 import Inputs.MouseInputs;
 
 import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.io.InputStream;
-import javax.imageio.ImageIO;
 import javax.swing.*;
 
 import static utils.Constants.PlayerConstants.*;
+import static utils.Constants.GameConstants.*;
 
 public class GamePanel extends JPanel {
     private Game game;
@@ -34,10 +31,8 @@ public class GamePanel extends JPanel {
 
     private void setPanelSize()
     {
-        Dimension size = new Dimension(1280, 800);
-        setMinimumSize(size);
+        Dimension size = new Dimension(GAME_WIDTH, GAME_HEIGHT);
         setPreferredSize(size);
-        setMaximumSize(size);
     }
 
     public void paintComponent(Graphics g)
